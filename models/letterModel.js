@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
 const letterSchema = new mongoose.Schema({
-    Date: {type: String, required: true},
-    RefNo: {type: String, required: true},
-    Company: {type: String, required: true},
-    Subject: {type: String, required: true},
-    MovedTo: {type: String, required: true},
-    OfficerNo: {type: String, required: true},
-    Type: {type: String, required: true},
-    Note: {type: String, required: false}
+    date: {type: String, required: true},
+    refNo: {type: String, required: true},
+    company: {type: String, required: true},
+    subject: {type: String, required: true},
+    movedTo: {type: String, required: true},
+    officerNo: {type: String, required: true},
+    type: {type: String, required: true},
+    note: {type: String, required: false}
 })
 
 const letterModel = mongoose.models.approvals || mongoose.model("approvals", letterSchema);
