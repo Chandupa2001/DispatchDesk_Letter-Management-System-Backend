@@ -1,8 +1,14 @@
 import accountsModel from "../models/AccountsModel.js";
+import establishmentModel from "../models/establishmentModel.js";
 import letterModel from "../models/letterModel.js";
+import recordRoomModel from "../models/recordRoomModel.js";
+import surveyingModel from "../models/surveyingModel.js";
 
 const modelMap = {
+    establishment: establishmentModel,
+    surveying: surveyingModel,
     accounts: accountsModel,
+    recordRoom: recordRoomModel
 };
 
 const addLetter = async (req,res) => {
