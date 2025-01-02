@@ -1,8 +1,9 @@
 import express from 'express'
-import { addLetter } from '../controllers/letterController.js';
+import { addLetter, approveLetter } from '../controllers/letterController.js';
 
 const letterRouter = express.Router();
 
 letterRouter.post("/add", addLetter);
+letterRouter.post("/approve", approveLetter);
 
 export default letterRouter;

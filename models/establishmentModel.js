@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const letterSchema = new mongoose.Schema({
+const establishmentSchema = new mongoose.Schema({
     date: {type: String, required: true},
     refNo: {type: String, required: true},
     company: {type: String, required: true},
@@ -8,9 +8,10 @@ const letterSchema = new mongoose.Schema({
     section: {type: String, required: true},
     officerNo: {type: String, required: true},
     postType: {type: String, required: true},
-    note: {type: String, required: false}
+    note: {type: String, required: false},
+    action: {type: String, required: false}
 })
 
-const letterModel = mongoose.models.approvals || mongoose.model("approvals", letterSchema);
+const establishmentModel = mongoose.models.establishment || mongoose.model("establishment", establishmentSchema);
 
-export default letterModel;
+export default establishmentModel;
