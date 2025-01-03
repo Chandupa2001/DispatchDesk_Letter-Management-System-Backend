@@ -14,7 +14,6 @@ const modelMap = {
 const addLetter = async (req,res) => {
     const {date, refNo, company, subject, section, officerNo, postType} = req.body;
     try {
-        // Checking is letter already exists
         const exists = await letterModel.findOne({refNo})
         if (exists) {
             return res.json({success: false, message: "Letter already exists"})
@@ -37,16 +36,31 @@ const addLetter = async (req,res) => {
     }
 }
 
-const approveLetter = async (req,res) => {
+const approveLetter = async (req, res) => {
     const { refNo, note } = req.body;
     try {
-        const record = await letterModel.findOneAndUpdate({refNo}, {note})
+        const record = await letterModel.findOneAndUpdate(
+            { refNo },
+            { note },
+            { new: true }
+        );
 
-        const targetTable = record.section.toLowerCase();
+        if (!record) {
+            return res.json({ success: false, message: "Letter not found" });
+        }
 
-        const targetModel = modelMap[targetTable];
-        
-        const newRecord = new targetModel(record.toObject());
+        // Map section value to a model key
+        const sectionToModelMap = {
+            'Record Room': 'recordRoom',
+            'Surveying': 'surveying',
+            'Accounts': 'accounts',
+            'Establishment': 'establishment',
+        };
+
+        const targetTableKey = sectionToModelMap[record.section];
+        const targetModel = modelMap[targetTableKey];
+
+        const newRecord = new targetModel({ ...record.toObject(), note });
         await newRecord.save();
 
         await letterModel.deleteOne({ refNo });
@@ -54,8 +68,18 @@ const approveLetter = async (req,res) => {
         res.json({ success: true, message: "Letter approved and moved successfully" });
     } catch (error) {
         console.error(error);
-        res.json({success: false, message: "Error"});
+        res.json({ success: false, message: "Error" });
+    }
+};
+
+const fectchLetters = async (req,res) => {
+    try {
+        const letters = await letterModel.find({});
+        res.json({success: true, data: letters})
+    } catch (error) {
+        console.error(error);
+        res.json({success: false, message: error})
     }
 }
 
-export { addLetter, approveLetter }
+export { addLetter, approveLetter, fectchLetters }
