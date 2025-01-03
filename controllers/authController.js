@@ -25,7 +25,10 @@ export const signup = async (req, res) => {
         officerNo,
         officerName,
         email,
-        password,  // Password will be hashed in the model using pre-save middleware
+        password,  
+
+
+        
       });
   
       // Save the new user to the database
