@@ -55,10 +55,10 @@ export const signup = async (req, res) => {
 // Login logic
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { officerNo, password } = req.body;
 
-    // Find the user by email
-    const user = await userModel.findOne({ email });  
+    // Find the user officerNo
+    const user = await userModel.findOne({ officerNo });  
     if (!user) {
       return res.status(400).json({ message: 'User not found' });
     }
