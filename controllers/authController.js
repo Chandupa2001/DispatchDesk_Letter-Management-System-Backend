@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
         password,  
 
 
-        
+
       });
   
       // Save the new user to the database
@@ -37,14 +37,14 @@ export const signup = async (req, res) => {
       // Create a token (JWT) for the user
       const token = jwt.sign(
         { id: newUser._id },
-        process.env.JWT_SECRET,  // Ensure you set your JWT secret in an environment variable
+        process.env.JWT_SECRET,  
         { expiresIn: '1h' }
       );
   
       // Send response with the token
       res.status(201).json({ message: 'User created successfully', token });
     } catch (error) {
-      console.error('Error during signup:', error);  // Add more specific error logging
+      console.error('Error during signup:', error);  
       if (error.name === 'ValidationError') {
         return res.status(400).json({ message: 'Validation error: ' + error.message });
       }
@@ -55,10 +55,10 @@ export const signup = async (req, res) => {
 // Login logic
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { officerNo, password } = req.body;
 
-    // Find the user by email
-    const user = await userModel.findOne({ email });  // Fixed this line to use userModel
+    // Find the user officerNo
+    const user = await userModel.findOne({ officerNo });  
     if (!user) {
       return res.status(400).json({ message: 'User not found' });
     }
@@ -72,7 +72,7 @@ export const login = async (req, res) => {
     // Create a token (JWT) for the user
     const token = jwt.sign(
       { id: user._id },
-      process.env.JWT_SECRET,  // Ensure you set your JWT secret in an environment variable
+      process.env.JWT_SECRET,  
       { expiresIn: '1h' }
     );
 
