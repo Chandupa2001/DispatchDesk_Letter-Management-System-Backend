@@ -1,4 +1,4 @@
-import userModel from '../models/userModel.js';  // Ensure this is the correct import
+import userModel from '../models/userModel.js';  
 import jwt from 'jsonwebtoken';
 
 // Signup logic
