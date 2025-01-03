@@ -1,4 +1,4 @@
-import userModel from '../models/userModel.js';  // Ensure this is the correct import
+import userModel from '../models/userModel.js';  
 import jwt from 'jsonwebtoken';
 
 // Signup logic
@@ -11,7 +11,7 @@ export const signup = async (req, res) => {
         return res.status(400).json({ message: 'All fields are required' });
       }
   
-      // Check if user already exists based on officerNo (unique)
+      // Check if user already exists based on officerNo and email (unique)
       const existingUser = await userModel.findOne({
         $or: [{ officerNo }, { email }],
       });
@@ -25,7 +25,10 @@ export const signup = async (req, res) => {
         officerNo,
         officerName,
         email,
-        password,  // Password will be hashed in the model using pre-save middleware
+        password,  
+
+
+        
       });
   
       // Save the new user to the database
