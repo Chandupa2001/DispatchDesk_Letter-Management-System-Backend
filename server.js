@@ -2,6 +2,10 @@ import express from 'express'
 import cors from 'cors'
 import { connectDB } from './config/db.js';
 import letterRouter from './routes/letterRouter.js';
+import accountRouter from './routes/accountsRouter.js';
+import establishmentRouter from './routes/establishmentRouter.js';
+import surveyingRouter from './routes/surveyingRouter.js';
+import recordRoomRouter from './routes/recordRoomRouter.js';
 import authRoutes from './routes/authRoutes.js';
 import dotenv from 'dotenv';
 
@@ -20,9 +24,14 @@ app.use(cors({ origin: "http://localhost:3000" }));
 connectDB();
 
 // api endpoints
+
+app.use("/api/letter", letterRouter)
+app.use("/api/accounts", accountRouter)
+app.use("/api/establishment", establishmentRouter)
+app.use("/api/surveying", surveyingRouter)
+app.use("/api/recordRoom", recordRoomRouter)
 app.use("/api/letter", letterRouter);
 app.use('/api/auth', authRoutes);
-
 
 // Global error handler
 app.use((err, req, res, next) => {
