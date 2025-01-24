@@ -1,4 +1,5 @@
 import accountsModel from "../models/AccountsModel.js";
+import actionTakenModel from "../models/actionTakenModel.js";
 import establishmentModel from "../models/establishmentModel.js";
 import letterModel from "../models/letterModel.js";
 import recordRoomModel from "../models/recordRoomModel.js";
@@ -82,4 +83,52 @@ const fectchLetters = async (req,res) => {
     }
 }
 
-export { addLetter, approveLetter, fectchLetters }
+const searchLetters = async (req, res) => {
+    const { query } = req.body; 
+
+    try {
+        // Check if query is a valid string
+        if (!query || typeof query !== 'string') {
+            return res.status(400).json({ success: false, message: "Invalid search query" });
+            console.log("Invalid search query")
+        }
+
+        console.log(query);
+
+        // Define a filter criteria using the search query
+        const filterCriteria = {
+            $or: [
+                { refNo: { $regex: query, $options: 'i' } },
+                { company: { $regex: query, $options: 'i' } },
+                { subject: { $regex: query, $options: 'i' } }
+            ]
+        };
+
+        // Fetch data from all the models using the defined criteria
+        const accountsData = await accountsModel.find(filterCriteria).lean();
+        const actionsTakenData = await actionTakenModel.find(filterCriteria).lean();
+        const establishmentsData = await establishmentModel.find(filterCriteria).lean();
+        const lettersData = await letterModel.find(filterCriteria).lean();
+        const recordRoomData = await recordRoomModel.find(filterCriteria).lean();
+        const surveyingData = await surveyingModel.find(filterCriteria).lean();
+
+        // Combine results from all models
+        const combinedResults = [
+            ...accountsData.map(doc => ({ ...doc, source: 'Accounts' })),
+            ...actionsTakenData.map(doc => ({ ...doc, source: 'ActionsTaken' })),
+            ...establishmentsData.map(doc => ({ ...doc, source: 'Establishments' })),
+            ...lettersData.map(doc => ({ ...doc, source: 'Letters' })),
+            ...recordRoomData.map(doc => ({ ...doc, source: 'RecordRoom' })),
+            ...surveyingData.map(doc => ({ ...doc, source: 'Surveying' }))
+        ];
+
+        res.json({ success: true, data: combinedResults });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to fetch data.' });
+    }
+};
+
+
+
+export { addLetter, approveLetter, fectchLetters, searchLetters }
