@@ -4,6 +4,7 @@ import establishmentModel from "../models/establishmentModel.js";
 import letterModel from "../models/letterModel.js";
 import recordRoomModel from "../models/recordRoomModel.js";
 import surveyingModel from "../models/surveyingModel.js";
+import User from "../models/userModel.js";
 
 const modelMap = {
     establishment: establishmentModel,
@@ -129,6 +130,15 @@ const searchLetters = async (req, res) => {
     }
 };
 
+const fectchUsers = async (req,res) => {
+    try {
+        const users = await User.find({});
+        res.json({success: true, data: users})
+    } catch (error) {
+        console.error(error);
+        res.json({success: false, message: error})
+    }
+}
 
 
-export { addLetter, approveLetter, fectchLetters, searchLetters }
+export { addLetter, approveLetter, fectchLetters, searchLetters, fectchUsers }
