@@ -1,6 +1,5 @@
-import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
-
+import bcrypt from 'bcrypt';
 
 const userSchema = new mongoose.Schema({
   officerNo: {
@@ -42,10 +41,10 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// Add a method to compare passwords
+// Compare passwords
 userSchema.methods.comparePassword = async function (inputPassword) {
   return await bcrypt.compare(inputPassword, this.password);
 };
 
-const User = mongoose.model('users', userSchema);
+const User = mongoose.model('User', userSchema);
 export default User;
